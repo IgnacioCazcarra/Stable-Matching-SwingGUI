@@ -5,8 +5,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JComboBox;
@@ -20,6 +23,7 @@ public class GUI {
 	public GUI() {}
 	
 	public List<JTextField> enter_names(int cantidadNombres) {
+		
 		List<JTextField> listaNombres = new ArrayList<JTextField>();
 
 		JPanel panel = new JPanel();
@@ -52,7 +56,7 @@ public class GUI {
 		
 
 	
-	public Pair pick_options(List<Person> personas) {
+	public void pick_options(List<Person> personas) {
 		
 		
 		String[] nchicas = new String[personas.size()/2];
@@ -107,36 +111,111 @@ public class GUI {
 			}	
 		}
 		
+		Collections.reverse(personasAux);
+		
 		for(int i = 0 ; i < personasAux.size() ; i++) {
-			
 			if(i%(personas.size()/2)==0 && i!=0) {
 				current++;
 			}
+			
 			if(personas.get(current) instanceof Boy && personasAux.get(i) instanceof Girl) {
 				((Boy) personas.get(current)).getGirlsList().add((Girl) personasAux.get(i));
 			}
 			else if(personas.get(current) instanceof Girl && personasAux.get(i) instanceof Boy) {
-				((Girl) personas.get(current)).getBoyList().add((Boy) personasAux.get(i));
+				((Girl) personas.get(current)).getBoysList().add((Boy) personasAux.get(i));
 			}
 		}
 	   
-		List<List<Girl>> eleccionesChicos = new ArrayList<List<Girl>>();
-		List<List<Boy>> eleccionesChicas = new ArrayList<List<Boy>>();
+	   List<Boy> chicos = new ArrayList<Boy>();
+	   List<Girl> chicas = new ArrayList<Girl>();
+	
+	   for(Person person : personas) {
+		   if(person instanceof Boy) {
+			   chicos.add((Boy)person);
+		   }
+		   else if(person instanceof Girl) {
+			   chicas.add((Girl)person);
+		   }
+		}
+	
+		this.stable_matching(chicos, chicas, personas);
 		
-		for(Person p : personas) {
-			if(p instanceof Boy) {
-				eleccionesChicos.add(((Boy) p).getGirlsList());
+	}
+	
+	public void stable_matching(List<Boy> chicos, List<Girl> chicas, List<Person> personas) {
+		/*Stable matching*/
+		boolean mientras = false;
+		int i=0;
+		
+		while(!mientras) {
+			
+			mientras = true;
+			for(Girl g : chicas) {
+				if(g.getNovio()==null) {
+					mientras = false;
+				}
 			}
-			else if(p instanceof Girl) {
-				eleccionesChicas.add(((Girl) p).getBoyList());
+			
+			Boy currentBoy = null;
+			
+			if(chicos.get(i).getNovia()==null) {
+				currentBoy = chicos.get(i);	
+				
+				int pos = 0;
+				
+				while(currentBoy.getNovia()==null && pos<currentBoy.getGirlsList().size()) {
+					
+					if(currentBoy.getGirlsList().get(pos).getNovio()==null) {
+						currentBoy.setNovia(currentBoy.getGirlsList().get(pos));
+						currentBoy.getGirlsList().get(pos).setNovio(currentBoy);
+					}
+					else {
+						Map<String,Integer> map = new HashMap<String, Integer>();
+						List<Boy> listaMujerActual = currentBoy.getGirlsList().get(pos).getBoysList();
+						
+						for(int posAux = 0; posAux < listaMujerActual.size(); posAux++) {
+							Boy aux = currentBoy.getGirlsList().get(pos).getBoysList().get(posAux);
+							map.put(aux.getName(), posAux+1);
+						}
+						
+						if(map.get(currentBoy.getName())<map.get(currentBoy.getGirlsList().get(pos).getNovio().getName())) {
+							for(Boy b : currentBoy.getGirlsList().get(pos).getBoysList()) {
+								if(b.getNovia()!=null) {
+									if(b.getNovia().equals(currentBoy.getGirlsList().get(pos))) {
+										b.setNovia(null);
+									}
+								}
+							}
+							currentBoy.getGirlsList().get(pos).setNovio(currentBoy);
+							currentBoy.setNovia(currentBoy.getGirlsList().get(pos));
+						}
+					}
+					pos++;
+				}
+	
+				
+			}
+			
+			if(i<chicos.size()-1) {
+				i++;
+			}
+			else {
+				i=0;
+			}
+			
+		}
+		/**/
+		/*Result*/
+		for(Person pe : personas) {
+			System.out.println();
+			if(pe instanceof Boy) {
+				System.out.println("Novio de "+pe.getName()+": "+((Boy) pe).getNovia().getName());
+			}
+			else if(pe instanceof Girl) {
+				System.out.println("Novio de "+pe.getName()+": "+((Girl) pe).getNovio().getName());
 			}
 		}
-		
-		System.out.println("tamaño eleccioneschicos "+eleccionesChicos.size());
-		System.out.println("tamaño eleccioneschicas "+eleccionesChicas.size());
-		Pair pair = new Pair(personas,eleccionesChicos,eleccionesChicas);
-		
-	   return pair;
+		/**/
 	}
 	
 	

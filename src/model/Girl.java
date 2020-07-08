@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Girl extends Person{
 
-	private List<Boy> boyList = new ArrayList<Boy>();
+	private List<Boy> boysList = new ArrayList<Boy>();
 	private Boy novio;
 	
 	public Girl(String name, Boy novio) {
@@ -13,12 +13,12 @@ public class Girl extends Person{
 		this.novio = novio;
 	}
 
-	public List<Boy> getBoyList() {
-		return boyList;
+	public List<Boy> getBoysList() {
+		return boysList;
 	}
 
-	public void setBoyList(List<Boy> boyList) {
-		this.boyList = boyList;
+	public void setBoysList(List<Boy> boyList) {
+		this.boysList = boyList;
 	}
 
 	public Boy getNovio() {
@@ -29,13 +29,4 @@ public class Girl extends Person{
 		this.novio = novio;
 	}
 
-	public List<Boy> convertirLista(List<Person> personas){
-		 List<Boy> boys = new ArrayList<Boy>();
-		for(Person p : personas) {
-			if(p instanceof Boy) {
-				boys.add((Boy) p);
-			}
-		}
-		return boys;
-	}
 }
