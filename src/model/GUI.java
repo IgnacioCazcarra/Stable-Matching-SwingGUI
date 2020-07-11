@@ -107,11 +107,6 @@ public class GUI {
 
 		Collections.reverse(personasAux);
 
-		for (Person p : personasAux) {
-			System.out.println(p.getName());
-		}
-		System.out.println();
-		System.out.println();
 
 		for (int i = 0; i < Math.sqrt(personasAux.size() / 2); i++) {
 
@@ -123,7 +118,6 @@ public class GUI {
 			}
 
 			for (int k = personas.size() / 2; k < personas.size(); k++) {
-				System.out.println(k + " y " + (int)(k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2)));
 
 				if (personas.get(k) instanceof Boy
 						&& personasAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))) instanceof Girl) {
@@ -139,19 +133,11 @@ public class GUI {
 		List<Girl> chicas = new ArrayList<Girl>();
 
 		for (Person person : personas) {
-			System.out.println();
 			if (person instanceof Boy) {
 				chicos.add((Boy) person);
-				System.out.println(person.getName());
-				for(Girl g : ((Boy) person).getGirlsList()) {
-					System.out.println(g.getName());
-				}
+
 			} else if (person instanceof Girl) {
-				System.out.println(person.getName());
 				chicas.add((Girl) person);
-				for(Boy b  : ((Girl) person).getBoysList()) {
-					System.out.println(b.getName());
-				}
 			}
 		}
 
