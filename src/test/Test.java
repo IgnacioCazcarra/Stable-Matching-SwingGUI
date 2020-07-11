@@ -12,7 +12,13 @@ public abstract class Test {
 		GUI gui = new GUI();
 		Solution solution = new Solution();
 		gui.setSolution(solution);
-		gui.pick_options(gui.createPeople(gui.enter_names(3)));
+		
+		try {
+			gui.pick_options(gui.createPeople(gui.enter_names(4)));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 		

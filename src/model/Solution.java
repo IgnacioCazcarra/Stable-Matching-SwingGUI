@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,18 @@ public class Solution {
 		boolean mientras = false;
 		int i=0;
 		
+		for(Girl g : chicas) {
+			List<Boy> blist = g.getBoysList();
+			Collections.reverse(blist);
+			g.setBoysList(blist);
+		}
+		for(Boy b : chicos) {
+			List<Girl> glist = b.getGirlsList();
+			Collections.reverse(glist);
+			b.setGirlsList(glist);
+		}
+		
 		while(!mientras) {
-			
 			mientras = true;
 			for(Girl g : chicas) {
 				if(g.getNovio()==null) {

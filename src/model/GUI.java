@@ -18,7 +18,7 @@ public class GUI {
 	public GUI() {
 	}
 
-	public List<JTextField> enter_names(int cantidadNombres) {
+	public List<JTextField> enter_names(int cantidadNombres) throws Exception {
 
 		List<JTextField> listaNombres = new ArrayList<JTextField>();
 
@@ -44,10 +44,13 @@ public class GUI {
 		int result = JOptionPane.showConfirmDialog(null, panel, "Stable Matching", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
 
+		if (result != JOptionPane.OK_OPTION)
+			throw new Exception("Operacion cancelada");
+
 		return listaNombres;
 	}
 
-	public void pick_options(List<Person> personas) {
+	public void pick_options(List<Person> personas) throws Exception {
 
 		String[] nchicas = new String[personas.size() / 2];
 		for (int i = 0; i < personas.size() / 2; i++) {
@@ -61,8 +64,9 @@ public class GUI {
 
 		List<JComboBox> elecciones = new ArrayList<JComboBox>();
 
-		JPanel panel = new JPanel(new GridLayout(0, 2, 8, 8));
+		JPanel panel = new JPanel(new GridLayout(personas.size(), 2, 8, 8));
 		int option = 0;
+
 		for (int i = 0; i < personas.size(); i++) {
 			option++;
 			if (option == (1 + personas.size() / 2)) {
@@ -88,7 +92,8 @@ public class GUI {
 		int result = JOptionPane.showConfirmDialog(null, panel, "Stable Matching", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE);
 
-		int current = 0;
+		if (result != JOptionPane.OK_OPTION)
+			throw new Exception("Operacion cancelada");
 
 		List<Person> personasAux = new ArrayList<Person>();
 
@@ -102,37 +107,51 @@ public class GUI {
 
 		Collections.reverse(personasAux);
 
-		for (int i = 0; i <  Math.sqrt(personasAux.size()/2); i++) {
-
-				for (int j = 0; j < personas.size() / 2; j++) {
-					if (personas.get(j) instanceof Boy && personasAux.get(j + (i * personas.size() / 2)) instanceof Girl) {
-
-						((Boy) personas.get(j)).getGirlsList() .add((Girl) personasAux.get(j + (i * personas.size() / 2)));
-
-					} else if (personas.get(j) instanceof Girl && personasAux.get(j + (i * personas.size() / 2)) instanceof Boy) {
-
-						((Girl) personas.get(j)).getBoysList().add((Boy) personasAux.get(j + (i * personas.size() / 2)));
-					}
-				}
-			
-				for (int k = personas.size() / 2; k < personas.size(); k++) {
-					if (personas.get(k) instanceof Boy && personasAux.get(personas.size()+k + (i * personas.size() / 2)) instanceof Girl) {
-						((Boy) personas.get(k)).getGirlsList().add((Girl) personasAux.get(personas.size()+k + (i * personas.size() / 2)));
-	
-					} else if (personas.get(k) instanceof Girl && personasAux.get(personas.size()+k + (i * personas.size() / 2)) instanceof Boy) {
-						((Girl) personas.get(k)).getBoysList().add((Boy) personasAux.get(personas.size()+k + (i * personas.size() / 2)));
-					}
-				}
-			
+		for (Person p : personasAux) {
+			System.out.println(p.getName());
 		}
+		System.out.println();
+		System.out.println();
+
+		for (int i = 0; i < Math.sqrt(personasAux.size() / 2); i++) {
+
+			for (int j = 0; j < personas.size() / 2; j++) {
+
+				if (personas.get(j) instanceof Girl && personasAux.get(j + (i * personas.size() / 2)) instanceof Boy) {
+					((Girl) personas.get(j)).getBoysList().add((Boy) personasAux.get(j + (i * personas.size() / 2)));
+				}
+			}
+
+			for (int k = personas.size() / 2; k < personas.size(); k++) {
+				System.out.println(k + " y " + (int)(k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2)));
+
+				if (personas.get(k) instanceof Boy
+						&& personasAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))) instanceof Girl) {
+					((Boy) personas.get(k)).getGirlsList()
+							.add((Girl) personasAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))));
+
+				}
+			}
+
+		}
+
 		List<Boy> chicos = new ArrayList<Boy>();
 		List<Girl> chicas = new ArrayList<Girl>();
 
 		for (Person person : personas) {
+			System.out.println();
 			if (person instanceof Boy) {
 				chicos.add((Boy) person);
+				System.out.println(person.getName());
+				for(Girl g : ((Boy) person).getGirlsList()) {
+					System.out.println(g.getName());
+				}
 			} else if (person instanceof Girl) {
+				System.out.println(person.getName());
 				chicas.add((Girl) person);
+				for(Boy b  : ((Girl) person).getBoysList()) {
+					System.out.println(b.getName());
+				}
 			}
 		}
 
