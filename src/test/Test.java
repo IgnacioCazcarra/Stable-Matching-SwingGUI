@@ -14,7 +14,7 @@ public abstract class Test {
 		gui.setSolution(solution);
 		
 		try {
-			gui.pick_options(gui.createPeople(gui.enter_names(4)));
+			gui.pick_options(gui.createPeople(gui.enter_names(3)));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

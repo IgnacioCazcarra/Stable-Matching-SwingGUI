@@ -11,7 +11,7 @@ public class Solution {
 	
 	public Solution() {}
 	
-	public void stable_matching(List<Boy> chicos, List<Girl> chicas, List<Person> personas) {
+	public List<Person> stable_matching(List<Boy> chicos, List<Girl> chicas, List<Person> personas) {
 		/*Stable matching*/
 		
 		boolean mientras = false;
@@ -82,15 +82,7 @@ public class Solution {
 			
 		}
 
-		for(Person pe : personas) {
-			System.out.println();
-			if(pe instanceof Boy) {
-				System.out.println("Novio de "+pe.getName()+": "+((Boy) pe).getNovia().getName());
-			}
-			else if(pe instanceof Girl) {
-				System.out.println("Novia de "+pe.getName()+": "+((Girl) pe).getNovio().getName());
-			}
-		}
+		return personas;
 	}
 	
 	

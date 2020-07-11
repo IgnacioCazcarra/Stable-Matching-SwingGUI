@@ -141,7 +141,7 @@ public class GUI {
 			}
 		}
 
-		solution.stable_matching(chicos, chicas, personas);
+		printResults(solution.stable_matching(chicos, chicas, personas));
 
 	}
 
@@ -164,6 +164,23 @@ public class GUI {
 		return personas;
 	}
 
+	public void printResults(List<Person> personas) {
+		JPanel panel = new JPanel(new GridLayout(2, personas.size()/2, 8, 8));
+		
+		for(Person pe : personas) {
+
+			if(pe instanceof Boy) {
+				panel.add(new JLabel("Novia de "+pe.getName()+": "+((Boy) pe).getNovia().getName()));
+			}
+			else if(pe instanceof Girl) {
+				panel.add(new JLabel("Novio de "+pe.getName()+": "+((Girl) pe).getNovio().getName()));
+			}
+		}
+		
+		int result = JOptionPane.showConfirmDialog(null, panel, "Stable Matching", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE);
+	}
+	
 	public Solution getSolution() {
 		return solution;
 	}
