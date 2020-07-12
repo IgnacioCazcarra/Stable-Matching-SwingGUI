@@ -11,23 +11,12 @@ public class Solution {
 	
 	public Solution() {}
 	
-	public List<Person> stable_matching(List<Boy> chicos, List<Girl> chicas, List<Person> personas) {
+	public List<Boy> stable_matching(List<Boy> chicos, List<Girl> chicas, List<Person> personas) {
 		/*Stable matching*/
 		
 		boolean mientras = false;
 		int i=0;
-		
-		for(Girl g : chicas) {
-			List<Boy> blist = g.getBoysList();
-			Collections.reverse(blist);
-			g.setBoysList(blist);
-		}
-		for(Boy b : chicos) {
-			List<Girl> glist = b.getGirlsList();
-			Collections.reverse(glist);
-			b.setGirlsList(glist);
-		}
-		
+			
 		while(!mientras) {
 			mientras = true;
 			for(Girl g : chicas) {
@@ -82,7 +71,7 @@ public class Solution {
 			
 		}
 
-		return personas;
+		return chicos;
 	}
 	
 	

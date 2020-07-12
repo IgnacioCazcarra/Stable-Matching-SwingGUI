@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -106,23 +107,33 @@ public class GUI {
 		}
 
 		Collections.reverse(personasAux);
+		
+		List<Person> aux1 = personasAux.subList(0, personasAux.size()/2);
+		Collections.reverse(aux1);
 
+		List<Person> aux2 = personasAux.subList(personasAux.size()/2, personasAux.size());
+		Collections.reverse(aux2);
 
-		for (int i = 0; i < Math.sqrt(personasAux.size() / 2); i++) {
+		List<Person> eleccionesAux = new ArrayList<Person>();
+		
+		eleccionesAux.addAll(aux1);
+		eleccionesAux.addAll(aux2);
+		
+		for (int i = 0; i < Math.sqrt(eleccionesAux.size() / 2); i++) {
 
 			for (int j = 0; j < personas.size() / 2; j++) {
 
-				if (personas.get(j) instanceof Girl && personasAux.get(j + (i * personas.size() / 2)) instanceof Boy) {
-					((Girl) personas.get(j)).getBoysList().add((Boy) personasAux.get(j + (i * personas.size() / 2)));
+				if (personas.get(j) instanceof Girl && eleccionesAux.get(j + (i * personas.size() / 2)) instanceof Boy) {
+					((Girl) personas.get(j)).getBoysList().add((Boy) eleccionesAux.get(j + (i * personas.size() / 2)));
 				}
 			}
 
 			for (int k = personas.size() / 2; k < personas.size(); k++) {
 
 				if (personas.get(k) instanceof Boy
-						&& personasAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))) instanceof Girl) {
+						&& eleccionesAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))) instanceof Girl) {
 					((Boy) personas.get(k)).getGirlsList()
-							.add((Girl) personasAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))));
+							.add((Girl) eleccionesAux.get((int) (k + Math.pow(personas.size()/2, 2)-(personas.size()/2) + (i * personas.size() / 2))));
 
 				}
 			}
@@ -164,20 +175,16 @@ public class GUI {
 		return personas;
 	}
 
-	public void printResults(List<Person> personas) {
-		JPanel panel = new JPanel(new GridLayout(2, personas.size()/2, 8, 8));
+	public void printResults(List<Boy> chicos) {
 		
-		for(Person pe : personas) {
-
-			if(pe instanceof Boy) {
-				panel.add(new JLabel("Novia de "+pe.getName()+": "+((Boy) pe).getNovia().getName()));
-			}
-			else if(pe instanceof Girl) {
-				panel.add(new JLabel("Novio de "+pe.getName()+": "+((Girl) pe).getNovio().getName()));
-			}
+		JPanel panel = new JPanel(new GridLayout(1,0, 8, 8));
+		
+		for(Boy b : chicos) {
+			panel.add(new JLabel("Novia de "+b.getName()+": "+b.getNovia().getName()));
 		}
+
 		
-		int result = JOptionPane.showConfirmDialog(null, panel, "Stable Matching", JOptionPane.OK_CANCEL_OPTION,
+		int result = JOptionPane.showConfirmDialog(null, panel, "Stable Matching",JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.PLAIN_MESSAGE);
 	}
 	
